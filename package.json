@@ -1,0 +1,22 @@
+{
+  "name": "root",
+  "version": "1.0.0",
+  "description": "A place for college students to track tabs with friends and housemates",
+  "repository": "git@github.com:EthanOrlander/tabapp.git",
+  "author": "Ethan Orlander <ethanorlander@gmail.com>",
+  "license": "UPDATE LATER",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "backend/*",
+      "infra",
+      "apps/*"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "commitizen": "^4.2.4",
+    "husky": "^7.0.1"
+  }
+}
