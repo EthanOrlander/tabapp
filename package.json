@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A place for college students to track tabs with friends and housemates",
   "repository": "git@github.com:EthanOrlander/tabapp.git",
-  "author": "Ethan Orlander <ethanorlander@gmail.com>",
+  "author": "Ethan Orlander",
   "license": "UPDATE LATER",
   "private": true,
   "workspaces": {
