@@ -9,5 +9,7 @@ npm-debug.*
 *.orig.*
 web-build/
 
+__generated__
+
 # macOS
 .DS_Store
