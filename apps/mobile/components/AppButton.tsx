@@ -1,28 +1,48 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default function AppButton({ title, onPress }: { title: string, onPress: () => void }) {
+type AppButtonProps = {
+  title: string;
+  onPress: () => void;
+  isLoading?: boolean;
+};
+
+// TODO disable press when loading
+const AppButton: React.FC<AppButtonProps> = ({ title, onPress, isLoading = false }) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <Text style={styles.buttonText}>{title}</Text>
+      {/* TODO Make this loading indicator work */}
+      <ActivityIndicator animating={isLoading} />
     </TouchableOpacity>
   );
-}
+};
+
+export default AppButton;
 
 const styles = StyleSheet.create({
   button: {
+    display: 'flex',
+    flexDirection: 'row',
     marginVertical: 10,
-    borderRadius: 25,
+    backgroundColor: '#6425C7',
+    borderRadius: 5,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: '#6425C7',
+    shadowColor: 'rgb(100, 37, 199)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 15,
-    width: '80%',
-    backgroundColor: 'tomato'
+    width: '100%',
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: '600',
-    textTransform: 'uppercase'
-  }
+    textTransform: 'uppercase',
+  },
 });

@@ -7,18 +7,13 @@ import Amplify, { Auth } from 'aws-amplify';
 import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {CognitoUser} from "amazon-cognito-identity-js";
+import { CognitoUser } from 'amazon-cognito-identity-js';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
-import SignIn from './screens/SignIn';
-import SignUp from './screens/SignUp';
-import ConfirmSignUp from './screens/ConfirmSignUp';
-import ConfirmSignIn from './screens/ConfirmSignIn';
-import ForgotPassword from "./screens/ForgotPassword";
-import ForgotPasswordSet from "./screens/ForgotPasswordSet";
+import AuthStack from './screens/auth/Auth';
 
 import Home from './screens/Home';
 
@@ -27,53 +22,23 @@ Amplify.configure({
     // region: process.env.AWS_COGNITO_REGION,
     // userPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
     // userPoolWebClientId: process.env.AWS_COGNITO_USER_POOL_WEB_CLIENT_ID,
-    region: "us-east-2",
-    userPoolId: "us-east-2_ICXYUL1pp",
-    userPoolWebClientId: "2017tkqfc667fd1dnmjkc0ekdt",
+    region: 'us-east-2',
+    userPoolId: 'us-east-2_ICXYUL1pp',
+    userPoolWebClientId: '2017tkqfc667fd1dnmjkc0ekdt',
   },
 });
 
-const AuthenticationStack = createStackNavigator();
 const AppStack = createStackNavigator();
 
-const AuthenticationNavigator = (props: any) => {
-  return (
-    <AuthenticationStack.Navigator headerMode="none">
-      <AuthenticationStack.Screen name="SignIn">
-        {screenProps => (
-          <SignIn {...screenProps} setCognitoUser={props.setCognitoUser}/>
-        )}
-      </AuthenticationStack.Screen>
-      <AuthenticationStack.Screen name="SignUp">
-      {screenProps => (
-          <SignUp {...screenProps} setCognitoUser={props.setCognitoUser}/>
-        )}
-      </AuthenticationStack.Screen>
-      <AuthenticationStack.Screen
-        name="ConfirmSignUp">
-          {screenProps => (
-          <ConfirmSignUp {...screenProps} cognitoUser={props.cognitoUser}/>
-        )}
-        </AuthenticationStack.Screen>
-      <AuthenticationStack.Screen name="ConfirmSignIn">
-        {screenProps => (<ConfirmSignIn {...screenProps} updateAuthState={props.updateAuthState} cognitoUser={props.cognitoUser}/>)}
-        </AuthenticationStack.Screen>
-        <AuthenticationStack.Screen name="ForgotPassword">
-        {screenProps => (<ForgotPassword {...screenProps} setUsername={props.setUsername} />)}
-        </AuthenticationStack.Screen>
-        <AuthenticationStack.Screen name="ForgotPasswordSet">
-        {screenProps => (<ForgotPasswordSet {...screenProps} username={props.username} />)}
-        </AuthenticationStack.Screen>
-    </AuthenticationStack.Navigator>
-  );
+type AppNavigatorProps = {
+  updateAuthState: (state: string) => void;
 };
-const AppNavigator = (props: any) => {
+
+const AppNavigator: React.FC<AppNavigatorProps> = ({ updateAuthState }) => {
   return (
     <AppStack.Navigator>
       <AppStack.Screen name="Home">
-        {screenProps => (
-          <Home {...screenProps} updateAuthState={props.updateAuthState} />
-        )}
+        {(screenProps) => <Home {...screenProps} updateAuthState={updateAuthState} />}
       </AppStack.Screen>
     </AppStack.Navigator>
   );
@@ -86,16 +51,11 @@ const Initializing = () => {
   );
 };
 
-function App() {
-
+const App: React.FC = () => {
   const [isUserLoggedIn, setUserLoggedIn] = useState('initializing');
-  // CognitoUser needed in confirmSignUp function & confirmSignIn function
-  const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>();
-  // Username needed in forgotpassword function
-  const [username, setUsername] = useState<CognitoUser | null>();
 
   useEffect(() => {
-    checkAuthState();
+    void checkAuthState();
   }, []);
   async function checkAuthState() {
     try {
@@ -114,12 +74,8 @@ function App() {
   return (
     <NavigationContainer>
       {isUserLoggedIn === 'initializing' && <Initializing />}
-      {isUserLoggedIn === 'loggedIn' && (
-        <AppNavigator updateAuthState={updateAuthState}/>
-      )}
-      {isUserLoggedIn === 'loggedOut' && (
-        <AuthenticationNavigator updateAuthState={updateAuthState} cognitoUser={cognitoUser} setCognitoUser={setCognitoUser} username={username} setUsername={setUsername}/>
-      )}
+      {isUserLoggedIn === 'loggedIn' && <AppNavigator updateAuthState={updateAuthState} />}
+      {isUserLoggedIn === 'loggedOut' && <AuthStack updateAuthState={updateAuthState} />}
     </NavigationContainer>
   );
   // const isLoadingComplete = useCachedResources();
@@ -134,7 +90,6 @@ function App() {
   //     </SafeAreaProvider>
   //   );
   // }
-}
-
+};
 
 export default App;

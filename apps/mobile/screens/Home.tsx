@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
-export default function Home({ updateAuthState }: { updateAuthState: (authState: string) => void }) {
+export default function Home({
+  updateAuthState,
+}: {
+  updateAuthState: (authState: string) => void;
+}) {
   async function signOut() {
     try {
       await Auth.signOut();
@@ -21,6 +25,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
