@@ -11,6 +11,10 @@
       "backend/*",
       "infra",
       "apps/*"
+    ],
+    "nohoist": [
+      "**/@pulumi",
+      "**/@pulumi/**"
     ]
   },
   "scripts": {

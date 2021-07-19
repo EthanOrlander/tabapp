@@ -1,6 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import { PostConfirmationConfirmSignUpTriggerEvent } from "aws-lambda";
+import * as awsx from "@pulumi/awsx";
+import { PostConfirmationConfirmSignUpTriggerEvent, PreSignUpTriggerEvent } from "aws-lambda";
 import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 /*
@@ -27,6 +28,29 @@ const postConfirmSignUpAutoVerifyEmailLambda = new aws.lambda.CallbackFunction(`
             UserPoolId: event.userPoolId,
             Username: event.userName
         }).promise();
+        return event;
+    }
+})
+
+/*
+ * Before sign up, check if a user exists with the same email
+ * This isn't actually attached as the pre sign up lambda in Cognito, because
+ * cognito checks for duplicate usernames before it runs the pre sign up lambda & fails too early
+ * Must be called before signup by the frontend.
+ */
+const preSignUpLambda = new aws.lambda.CallbackFunction('cognito-pre-signup-lambda', {
+    callback: async (event: PreSignUpTriggerEvent) => {
+        const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
+        console.log("attributes:", event.request.userAttributes);
+        const users = await cognitoIdentityServiceProvider.listUsers({
+            UserPoolId: event.userPoolId,
+            AttributesToGet: ["phone_number", "phone_number_verified"],
+            Filter: `phone_number = "${event.request.userAttributes.phone_number}"`,
+            Limit: 1
+        }).promise();
+        console.log("users: ", users);
+        if (users.Users && users.Users[0])
+            console.log("attributes: ", users.Users[0].Attributes)
         return event;
     }
 })
@@ -132,11 +156,47 @@ const cognitoDomain = new aws.cognito.UserPoolDomain("tabapp-domain", {
     userPoolId: userPool.id
 })
 
-const allowCognito = new aws.lambda.Permission("AllowExecutionFromCognito", {
+const allowCognitoPostConfirmSignUp = new aws.lambda.Permission("AllowExecutionFromCognitoPostConfirmSignUp", {
     action: "lambda:InvokeFunction",
     function: postConfirmSignUpAutoVerifyEmailLambda.name,
     principal: "cognito-idp.amazonaws.com",
     sourceArn: userPool.arn,
 });
+
+const endpoint = new awsx.apigateway.API("auth", {
+    routes: [
+        // Serve a simple REST API on `GET /name` (using AWS Lambda)
+        {
+            path: "/preSignUp",
+            method: "GET",
+            eventHandler: async (req) => {
+                if (req.queryStringParameters) {
+                    const phoneNumber = req.queryStringParameters["phone_number"];
+                    const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
+                    const users = await cognitoIdentityServiceProvider.listUsers({
+                        UserPoolId: userPool.id.get(),
+                        AttributesToGet: ["phone_number", "phone_number_verified"],
+                        Filter: `phone_number = "${phoneNumber}"`,
+                        Limit: 1
+                    }).promise();
+                    if (users.Users && users.Users[0] && users.Users[0].Username && users.Users[0].Attributes && users.Users[0].Attributes.filter(a => a.Name === "phone_number_verified")[0].Value === 'false')
+                        void await cognitoIdentityServiceProvider.adminDeleteUser({
+                            UserPoolId: userPool.id.get(),
+                            Username: users.Users[0].Username
+                        }).promise()
+                }
+                return {
+                    statusCode: 200,
+                    body: Buffer.from(JSON.stringify({ success: true }), "utf8").toString("base64"),
+                    isBase64Encoded: true,
+                    headers: { "content-type": "application/json" },
+                }
+            }
+        }
+    ]
+});
+
+// Export the public URL for the HTTP service
+exports.url = endpoint.url;
 
 export const hostedSignInURL = pulumi.interpolate`https://${cognitoDomain.domain}.auth.us-east-2.amazoncognito.com/login?client_id=${cognitoAppClient.id}&response_type=code&scope=${cognitoAppClient.allowedOauthScopes.apply(scopes => scopes && scopes.join('+'))}&redirect_uri=${cognitoAppClient.defaultRedirectUri}`;

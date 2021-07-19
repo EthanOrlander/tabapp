@@ -18,7 +18,6 @@ const AppPhoneInput = React.forwardRef<any, TextInputProps>(
         ref={ref}
         layout="first"
         onChangeFormattedText={onChangeText}
-        textInputStyle={styles.textInput}
         textContainerStyle={styles.textContainer}
       />
     );

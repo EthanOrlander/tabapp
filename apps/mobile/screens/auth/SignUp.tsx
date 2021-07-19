@@ -57,6 +57,11 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
 
   async function onSubmit(data: FormData) {
     try {
+      const params = new URLSearchParams({ phone_number: encodeURIComponent(data.phoneNumber) });
+      // This checks if a user abandoned signup with this phone number, and deletes the abandoned record if it exists
+      await fetch(
+        `https://0xny7s40fh.execute-api.us-east-2.amazonaws.com/stage/preSignUp?${params.toString()}`,
+      );
       const res = await Auth.signUp({
         username: data.phoneNumber,
         password: data.password,
