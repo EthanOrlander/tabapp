@@ -48,6 +48,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   const ref_password = useRef<HTMLDivElement>(null);
   async function onSubmit(data: FormData) {
     try {
+      console.log(data.phoneNumber);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const res = await Auth.signIn(data.phoneNumber, data.password);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -66,6 +67,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
       control,
       error: errors.phoneNumber?.message,
       name: 'phoneNumber',
+      phone: true,
       textInputProps: {
         placeholder: 'Enter mobile',
         autoCapitalize: 'none',

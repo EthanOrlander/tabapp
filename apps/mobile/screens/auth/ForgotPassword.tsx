@@ -58,6 +58,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
     control,
     error: errors.phoneNumber?.message,
     name: 'phoneNumber',
+    phone: true,
     textInputProps: {
       placeholder: 'Enter mobile',
       autoCapitalize: 'none',

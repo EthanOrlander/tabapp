@@ -1,11 +1,13 @@
 import React from 'react';
-import { Control, Controller } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { StyleSheet, View, Text, TextInputProps } from 'react-native';
+import AppPhoneInput from './AppPhoneInput';
 import AppTextInput from './AppTextInput';
 
 export type FormInputProps = {
   label: string;
   leftIcon?: string;
+  phone?: boolean;
   control: any;
   name: string;
   defaultValue?: string;
@@ -14,24 +16,35 @@ export type FormInputProps = {
 };
 
 const FormInput = React.forwardRef<any, FormInputProps>(
-  ({ label, textInputProps, control, error, leftIcon, name, defaultValue }, ref) => {
+  ({ label, textInputProps, control, error, leftIcon, phone = false, name, defaultValue }, ref) => {
     return (
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>{label}</Text>
         <Controller
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <AppTextInput
-              onBlur={onBlur}
-              onChangeText={onChange}
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              value={value}
-              leftIcon={leftIcon}
-              ref={ref}
-              {...textInputProps}
-            />
-          )}
+          render={({ field: { onChange, onBlur, value } }) =>
+            phone ? (
+              <AppPhoneInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                value={value}
+                ref={ref}
+                {...textInputProps}
+              />
+            ) : (
+              <AppTextInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                value={value}
+                leftIcon={leftIcon}
+                ref={ref}
+                {...textInputProps}
+              />
+            )
+          }
           name={name}
           defaultValue={defaultValue}
         />

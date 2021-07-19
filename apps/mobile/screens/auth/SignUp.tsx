@@ -115,6 +115,7 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
       error: errors.phoneNumber?.message,
       name: 'phoneNumber',
       ref: ref_phoneNumber,
+      phone: true,
       textInputProps: {
         placeholder: 'Enter mobile',
         autoCapitalize: 'none',

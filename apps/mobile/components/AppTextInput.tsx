@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TextInput, TextInputProps } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import PhoneInput from 'react-native-phone-number-input';
 
 interface AppTextInputProps extends TextInputProps {
   leftIcon: any;
@@ -24,7 +25,7 @@ export default AppTextInput;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(0,0,0,0.025)',
     borderRadius: 5,
     borderWidth: 2,
     borderStyle: 'solid',
