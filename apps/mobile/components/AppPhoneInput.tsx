@@ -14,9 +14,10 @@ const AppPhoneInput = React.forwardRef<any, TextInputProps>(
         defaultCode="CA"
         containerStyle={styles.container}
         placeholderTextColor="#6e6869"
-        {...props}
-        ref={ref}
         layout="first"
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        textInputProps={{ ...props, ref }}
         onChangeFormattedText={onChangeText}
         textContainerStyle={styles.textContainer}
       />
