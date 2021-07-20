@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, TextInputProps } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -6,15 +6,39 @@ interface AppTextInputProps extends TextInputProps {
   leftIcon: any;
 }
 const AppTextInput = React.forwardRef<any, AppTextInputProps>(
-  ({ leftIcon, ...otherProps }, ref) => {
+  ({ leftIcon, secureTextEntry: propsSecureTextEntry, ...otherProps }, ref) => {
+    const [hidePassword, setHidePassword] = useState<boolean>(propsSecureTextEntry ?? false);
+    const onTogglePassword = () => setHidePassword((curr) => !curr);
+
     return (
       <View style={styles.container}>
         {leftIcon && (
-          /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
-          <MaterialCommunityIcons name={leftIcon} size={20} color="#6e6869" style={styles.icon} />
+          <MaterialCommunityIcons
+            /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
+            name={leftIcon}
+            size={20}
+            color="#6e6869"
+            style={styles.leftIcon}
+          />
         )}
         {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-        <TextInput style={styles.input} placeholderTextColor="#6e6869" {...otherProps} ref={ref} />
+        <TextInput
+          style={styles.input}
+          placeholderTextColor="#6e6869"
+          secureTextEntry={hidePassword}
+          {...otherProps}
+          ref={ref}
+        />
+        {propsSecureTextEntry && (
+          /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
+          <MaterialCommunityIcons
+            name={hidePassword ? 'eye' : 'eye-off'}
+            size={20}
+            color="#6e6869"
+            style={styles.rightIcon}
+            onPress={onTogglePassword}
+          />
+        )}
       </View>
     );
   },
@@ -37,8 +61,11 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '100%',
   },
-  icon: {
+  leftIcon: {
     marginRight: 10,
+  },
+  rightIcon: {
+    marginLeft: 10,
   },
   input: {
     width: '80%',
