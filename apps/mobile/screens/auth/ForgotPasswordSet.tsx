@@ -33,7 +33,7 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -95,7 +95,11 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
         {formInputs.map((formInput, key) => (
           <FormInput key={key} {...formInput} />
         ))}
-        <AppButton title="Set new password" onPress={handleSubmit(onSubmit)} />
+        <AppButton
+          title="Set new password"
+          onPress={handleSubmit(onSubmit)}
+          isLoading={isSubmitting}
+        />
       </View>
     </SafeAreaView>
   );

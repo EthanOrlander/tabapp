@@ -40,7 +40,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -113,7 +113,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.submitButtonContainer}>
-          <AppButton title="Submit" onPress={handleSubmit(onSubmit)} />
+          <AppButton title="Submit" onPress={handleSubmit(onSubmit)} isLoading={isSubmitting} />
         </View>
         <View style={styles.signUpLinkContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>

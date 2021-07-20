@@ -13,6 +13,7 @@ import { RootStackParamList } from './Auth';
 import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
+import { useState } from 'react';
 
 interface FormData {
   firstName: string;
@@ -47,8 +48,9 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormData>({ resolver: yupResolver(schema) });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { setCognitoUser } = useContext(AuthContext);
   const ref_lastName = useRef<HTMLDivElement>(null);
   const ref_phoneNumber = useRef<HTMLDivElement>(null);
@@ -56,6 +58,7 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
   const ref_password = useRef<HTMLDivElement>(null);
 
   async function onSubmit(data: FormData) {
+    setIsSubmitting(true);
     try {
       const params = new URLSearchParams({ phone_number: encodeURIComponent(data.phoneNumber) });
       // This checks if a user abandoned signup with this phone number, and deletes the abandoned record if it exists
@@ -79,6 +82,7 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
       console.log('❌ Error signing up...', error);
       // TODO display error message above sign up button. Can map the error codes from AWS to friendlier messages
     }
+    setIsSubmitting(false);
   }
 
   const formInputs: Array<FormInputProps & React.RefAttributes<any>> = [

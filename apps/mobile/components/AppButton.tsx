@@ -10,10 +10,13 @@ type AppButtonProps = {
 // TODO disable press when loading
 const AppButton: React.FC<AppButtonProps> = ({ title, onPress, isLoading = false }) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity
+      disabled={isLoading}
+      style={[styles.button, isLoading && styles.buttonLoading]}
+      onPress={onPress}>
       <Text style={styles.buttonText}>{title}</Text>
       {/* TODO Make this loading indicator work */}
-      <ActivityIndicator animating={isLoading} />
+      {isLoading && <ActivityIndicator style={styles.activityIndicator} color="#fff" />}
     </TouchableOpacity>
   );
 };
@@ -39,10 +42,18 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '100%',
   },
+  buttonLoading: {
+    borderColor: '#8659CC',
+    backgroundColor: '#8659CC',
+  },
   buttonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: '600',
     textTransform: 'uppercase',
+  },
+  activityIndicator: {
+    position: 'absolute',
+    right: 15,
   },
 });

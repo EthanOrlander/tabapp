@@ -30,7 +30,7 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -67,7 +67,7 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
       <View style={styles.container}>
         <Text style={styles.title}>Confirm Sign In</Text>
         <FormInput {...formInput} />
-        <AppButton title="Confirm" onPress={handleSubmit(onSubmit)} />
+        <AppButton title="Confirm" onPress={handleSubmit(onSubmit)} isLoading={isSubmitting} />
       </View>
     </SafeAreaView>
   );

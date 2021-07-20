@@ -36,7 +36,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -75,7 +75,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
         <Text style={styles.title}>Forgot password</Text>
         <FormInput {...formInput} />
         <Text>A recovery code will be sent to your email.</Text>
-        <AppButton title="Send recovery code" onPress={handleSubmit(onSubmit)} />
+        <AppButton
+          title="Send recovery code"
+          onPress={handleSubmit(onSubmit)}
+          isLoading={isSubmitting}
+        />
       </View>
     </SafeAreaView>
   );

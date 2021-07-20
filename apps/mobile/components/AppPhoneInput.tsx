@@ -8,6 +8,7 @@ import PhoneInput from 'react-native-phone-number-input';
  * to update parent form state with complete phone #, including country code
  */
 const AppPhoneInput = React.forwardRef<any, TextInputProps>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ value, onChangeText, ...props }, ref) => {
     return (
       <PhoneInput
