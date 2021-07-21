@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInputProps } from 'react-native';
+import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 
 /*
@@ -7,7 +7,7 @@ import PhoneInput from 'react-native-phone-number-input';
  * Run parent's (react-hook-form's) onChangeText on onChangeFormattedText,
  * to update parent form state with complete phone #, including country code
  */
-const AppPhoneInput = React.forwardRef<any, TextInputProps>(
+const AppPhoneInput = React.forwardRef<TextInput, TextInputProps>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ value, onChangeText, ...props }, ref) => {
     return (

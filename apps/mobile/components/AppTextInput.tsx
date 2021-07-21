@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 interface AppTextInputProps extends TextInputProps {
   leftIcon: any;
 }
-const AppTextInput = React.forwardRef<any, AppTextInputProps>(
+const AppTextInput = React.forwardRef<TextInput, AppTextInputProps>(
   ({ leftIcon, secureTextEntry: propsSecureTextEntry, ...otherProps }, ref) => {
     const [hidePassword, setHidePassword] = useState<boolean>(propsSecureTextEntry ?? false);
     const onTogglePassword = () => setHidePassword((curr) => !curr);

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppButton from '../../components/AppButton';
@@ -45,7 +45,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
     resolver: yupResolver(schema),
   });
   const { setCognitoUser } = useContext(AuthContext);
-  const ref_password = useRef<HTMLDivElement>(null);
+  const ref_password = useRef<TextInput>(null);
   async function onSubmit(data: FormData) {
     try {
       console.log(data.phoneNumber);

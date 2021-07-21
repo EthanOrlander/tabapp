@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppTextInput from '../../components/AppTextInput';
@@ -38,7 +38,7 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
     resolver: yupResolver(schema),
   });
   const { username } = useContext(AuthContext);
-  const ref_password = useRef<HTMLDivElement>(null);
+  const ref_password = useRef<TextInput>(null);
 
   async function onSubmit(data: FormData) {
     try {
@@ -70,14 +70,14 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
       },
     },
     {
-      label: 'Password',
+      label: 'New Password',
       leftIcon: 'lock',
       control,
       error: errors.password?.message,
       name: 'password',
       ref: ref_password,
       textInputProps: {
-        placeholder: 'Enter password',
+        placeholder: 'Enter new password',
         autoCapitalize: 'none',
         keyboardType: 'default',
         secureTextEntry: true,
