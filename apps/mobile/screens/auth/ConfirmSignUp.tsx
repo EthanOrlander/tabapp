@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import styles from './styles';
+import { sanitizeCognitoErrorMessage } from './utils';
 
 interface FormData {
   code: string;
@@ -35,19 +36,22 @@ const ConfirmSignUp: React.FC<ConfirmSignUpProps> = ({ navigation }) => {
     resolver: yupResolver(schema),
   });
   const { cognitoUser } = useContext(AuthContext);
-  async function onSubmit(data: FormData) {
-    try {
-      if (cognitoUser) await Auth.confirmSignUp(cognitoUser.getUsername(), data.code);
-      else throw Error('Cognito user is undefined');
-      console.log('✅ Code confirmed');
-      navigation.navigate('SignIn');
-    } catch (error) {
-      console.log(
-        '❌ Verification code does not match. Please enter a valid verification code.',
-        error,
-      );
-    }
-  }
+  const [cognitoError, setCognitoError] = useState<{
+    code: string;
+    message: string;
+    name: string;
+  } | null>(null);
+
+  const onSubmit = async (data: FormData) => {
+    if (cognitoUser)
+      await Auth.confirmSignUp(cognitoUser.getUsername(), data.code)
+        .then(() => {
+          setCognitoError(null);
+          navigation.navigate('SignIn');
+        })
+        .catch(setCognitoError);
+    else throw Error('Cognito user is undefined');
+  };
 
   const formInput: FormInputProps & React.RefAttributes<any> = {
     label: 'Code',
@@ -69,6 +73,11 @@ const ConfirmSignUp: React.FC<ConfirmSignUpProps> = ({ navigation }) => {
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.title}>Confirm Sign Up</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
         <FormInput {...formInput} />
         <AppButton
           title="Confirm Sign Up"

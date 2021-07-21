@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,6 +13,7 @@ import AuthContext from './AuthContext';
 import { useRef } from 'react';
 import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
+import { sanitizeCognitoErrorMessage } from './utils';
 
 interface FormData {
   phoneNumber: string;
@@ -46,19 +47,21 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   });
   const { setCognitoUser } = useContext(AuthContext);
   const ref_password = useRef<TextInput>(null);
-  async function onSubmit(data: FormData) {
-    try {
-      console.log(data.phoneNumber);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const res = await Auth.signIn(data.phoneNumber, data.password);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setCognitoUser(res);
-      console.log('✅ Success');
-      navigation.navigate('ConfirmSignIn');
-    } catch (error) {
-      console.log('❌ Error signing in...', error);
-    }
-  }
+  const [cognitoError, setCognitoError] = useState<{
+    code: string;
+    message: string;
+    name: string;
+  } | null>(null);
+
+  const onSubmit = async (data: FormData) => {
+    await Auth.signIn(data.phoneNumber, data.password)
+      .then((res) => {
+        setCognitoUser(res);
+        setCognitoError(null);
+        navigation.navigate('ConfirmSignIn');
+      })
+      .catch(setCognitoError);
+  };
 
   const formInputs: Array<FormInputProps & React.RefAttributes<any>> = [
     {
@@ -100,6 +103,11 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.title}>Sign in to your account</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
         {formInputs.map((formInput, key) => (
           <FormInput key={key} {...formInput} />
         ))}

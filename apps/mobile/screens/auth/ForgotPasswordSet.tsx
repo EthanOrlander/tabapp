@@ -13,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
+import { sanitizeCognitoErrorMessage } from './utils';
 
 interface FormData {
   code: string;
@@ -39,20 +40,22 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
   });
   const { username } = useContext(AuthContext);
   const ref_password = useRef<TextInput>(null);
+  const [cognitoError, setCognitoError] = useState<{
+    code: string;
+    message: string;
+    name: string;
+  } | null>(null);
 
-  async function onSubmit(data: FormData) {
-    try {
-      if (username) await Auth.forgotPasswordSubmit(username, data.code, data.password);
-      else throw Error('username is undefined');
-      console.log('✅ Code confirmed');
-      navigation.navigate('SignIn');
-    } catch (error) {
-      console.log(
-        '❌ Verification code does not match. Please enter a valid verification code.',
-        error,
-      );
-    }
-  }
+  const onSubmit = async (data: FormData) => {
+    if (username)
+      await Auth.forgotPasswordSubmit(username, data.code, data.password)
+        .then(() => {
+          setCognitoError(null);
+          navigation.navigate('SignIn');
+        })
+        .catch(setCognitoError);
+    else throw Error('username is undefined');
+  };
   const formInputs: Array<FormInputProps & React.RefAttributes<any>> = [
     {
       label: 'Code',
@@ -92,6 +95,11 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.title}>Forgot password</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
         {formInputs.map((formInput, key) => (
           <FormInput key={key} {...formInput} />
         ))}

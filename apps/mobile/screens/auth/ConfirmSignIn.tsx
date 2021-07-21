@@ -12,6 +12,8 @@ import FormInput, { FormInputProps } from '../../components/FormInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import styles from './styles';
+import { sanitizeCognitoErrorMessage } from './utils';
+import { useState } from 'react';
 
 interface FormData {
   code: string;
@@ -35,18 +37,21 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
     resolver: yupResolver(schema),
   });
   const { updateAuthState, cognitoUser } = useContext(AuthContext);
-  async function onSubmit(data: FormData) {
-    try {
-      await Auth.confirmSignIn(cognitoUser, data.code, 'SMS_MFA');
-      console.log('✅ Code confirmed');
-      updateAuthState('loggedIn');
-    } catch (error) {
-      console.log(
-        '❌ Verification code does not match. Please enter a valid verification code.',
-        error,
-      );
-    }
-  }
+  const [cognitoError, setCognitoError] = useState<{
+    code: string;
+    message: string;
+    name: string;
+  } | null>(null);
+
+  const onSubmit = async (data: FormData) => {
+    await Auth.confirmSignIn(cognitoUser, data.code, 'SMS_MFA')
+      .then(() => {
+        setCognitoError(null);
+        updateAuthState('loggedIn');
+      })
+      .catch(setCognitoError);
+  };
+
   const formInput: FormInputProps & React.RefAttributes<any> = {
     label: 'Code',
     leftIcon: 'numeric',
@@ -66,6 +71,11 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.title}>Confirm Sign In</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
         <FormInput {...formInput} />
         <AppButton title="Confirm" onPress={handleSubmit(onSubmit)} isLoading={isSubmitting} />
       </View>

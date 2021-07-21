@@ -16,6 +16,7 @@ import AppButton from '../../components/AppButton';
 import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Tooltip from '../../components/Tooltip';
+import { sanitizeCognitoErrorMessage } from './utils';
 
 interface FormData {
   firstName: string;
@@ -28,6 +29,9 @@ interface FormData {
 const phoneRegExp =
   /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
+// eslint-disable-next-line no-useless-escape
+const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+
 const schema = yup.object().shape({
   firstName: yup.string().required('Required'),
   lastName: yup.string().required('Required'),
@@ -36,7 +40,13 @@ const schema = yup.object().shape({
     .required('Required')
     .matches(phoneRegExp, 'Phone number must be formatted +16475238795'),
   email: yup.string().email('Enter a valid email').required('Required'),
-  password: yup.string().required('Required'),
+  password: yup
+    .string()
+    .required('Required')
+    .matches(
+      passwordRegExp,
+      'Must Contain 8 Characters, One Uppercase, One Lowercase, and One Number',
+    ),
 });
 
 interface SignUpProps {
@@ -58,34 +68,38 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
   const ref_phoneNumber = useRef<TextInput>(null);
   const ref_email = useRef<TextInput>(null);
   const ref_password = useRef<TextInput>(null);
+  const [cognitoError, setCognitoError] = useState<{
+    code: string;
+    message: string;
+    name: string;
+  } | null>(null);
 
-  async function onSubmit(data: FormData) {
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    try {
-      const params = new URLSearchParams({ phone_number: encodeURIComponent(data.phoneNumber) });
-      // This checks if a user abandoned signup with this phone number, and deletes the abandoned record if it exists
-      await fetch(
-        `https://0xny7s40fh.execute-api.us-east-2.amazonaws.com/stage/preSignUp?${params.toString()}`,
-      );
-      const res = await Auth.signUp({
-        username: data.phoneNumber,
-        password: data.password,
-        attributes: {
-          email: data.email,
-          phone_number: data.phoneNumber,
-          given_name: data.firstName,
-          family_name: data.lastName,
-        },
-      });
-      setCognitoUser(res.user);
-      console.log('✅ Sign-up Confirmed');
-      navigation.navigate('ConfirmSignUp');
-    } catch (error) {
-      console.log('❌ Error signing up...', error);
-      // TODO display error message above sign up button. Can map the error codes from AWS to friendlier messages
-    }
+    const params = new URLSearchParams({ phone_number: encodeURIComponent(data.phoneNumber) });
+    // This checks if a user abandoned signup with this phone number, and deletes the abandoned record if it exists
+    await fetch(
+      `https://0xny7s40fh.execute-api.us-east-2.amazonaws.com/stage/preSignUp?${params.toString()}`,
+    );
+    await Auth.signUp({
+      username: data.phoneNumber,
+      password: data.password,
+      attributes: {
+        email: data.email,
+        phone_number: data.phoneNumber,
+        given_name: data.firstName,
+        family_name: data.lastName,
+      },
+    })
+      .then((res) => {
+        setCognitoUser(res.user);
+        setCognitoError(null);
+        console.log('✅ Sign-up Confirmed');
+        navigation.navigate('ConfirmSignUp');
+      })
+      .catch(setCognitoError);
     setIsSubmitting(false);
-  }
+  };
 
   const formInputs: Array<FormInputProps & React.RefAttributes<any>> = [
     {
@@ -197,6 +211,11 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
       <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={5}>
         <View style={styles.container}>
           <Text style={styles.title}>Create a new account</Text>
+          {cognitoError && (
+            <Text style={styles.cognitoError}>
+              {sanitizeCognitoErrorMessage(cognitoError.message)}
+            </Text>
+          )}
           {formInputs.map((formInput, key) => (
             <FormInput key={key} {...formInput} />
           ))}

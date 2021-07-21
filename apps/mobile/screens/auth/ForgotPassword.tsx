@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +12,7 @@ import styles from './styles';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import FormInput, { FormInputProps } from '../../components/FormInput';
+import { sanitizeCognitoErrorMessage } from './utils';
 
 interface FormData {
   phoneNumber: string;
@@ -41,16 +42,21 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
     resolver: yupResolver(schema),
   });
   const { setUsername: setUsernameParent } = useContext(AuthContext);
-  async function onSubmit(data: FormData) {
-    try {
-      await Auth.forgotPassword(data.phoneNumber);
-      setUsernameParent(data.phoneNumber);
-      console.log('✅ Success');
-      navigation.navigate('ForgotPasswordSet');
-    } catch (error) {
-      console.log('❌ Error signing in...', error);
-    }
-  }
+  const [cognitoError, setCognitoError] = useState<{
+    code: string;
+    message: string;
+    name: string;
+  } | null>(null);
+
+  const onSubmit = async (data: FormData) => {
+    await Auth.forgotPassword(data.phoneNumber)
+      .then(() => {
+        setUsernameParent(data.phoneNumber);
+        setCognitoError(null);
+        navigation.navigate('ForgotPasswordSet');
+      })
+      .catch(setCognitoError);
+  };
 
   const formInput: FormInputProps & React.RefAttributes<any> = {
     label: 'Phone number',
@@ -73,6 +79,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <Text style={styles.title}>Forgot password</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
         <FormInput {...formInput} />
         <Text>A recovery code will be sent to your email.</Text>
         <AppButton

@@ -81,4 +81,7 @@ export default StyleSheet.create({
     padding: 10,
     elevation: 2,
   },
+  cognitoError: {
+    color: 'red',
+  },
 });
