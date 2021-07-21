@@ -7,6 +7,7 @@ import Amplify, { Auth } from 'aws-amplify';
 import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { PortalProvider } from '@gorhom/portal';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 
 import useCachedResources from './hooks/useCachedResources';
@@ -53,7 +54,6 @@ const Initializing = () => {
 
 const App: React.FC = () => {
   const [isUserLoggedIn, setUserLoggedIn] = useState('initializing');
-
   useEffect(() => {
     void checkAuthState();
   }, []);
@@ -72,11 +72,16 @@ const App: React.FC = () => {
   }
 
   return (
-    <NavigationContainer>
-      {isUserLoggedIn === 'initializing' && <Initializing />}
-      {isUserLoggedIn === 'loggedIn' && <AppNavigator updateAuthState={updateAuthState} />}
-      {isUserLoggedIn === 'loggedOut' && <AuthStack updateAuthState={updateAuthState} />}
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <PortalProvider>
+        <StatusBar />
+        <NavigationContainer>
+          {isUserLoggedIn === 'initializing' && <Initializing />}
+          {isUserLoggedIn === 'loggedIn' && <AppNavigator updateAuthState={updateAuthState} />}
+          {isUserLoggedIn === 'loggedOut' && <AuthStack updateAuthState={updateAuthState} />}
+        </NavigationContainer>
+      </PortalProvider>
+    </SafeAreaProvider>
   );
   // const isLoadingComplete = useCachedResources();
   // const colorScheme = useColorScheme();

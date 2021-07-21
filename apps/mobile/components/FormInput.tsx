@@ -1,8 +1,10 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { StyleSheet, View, Text, TextInputProps } from 'react-native';
 import AppPhoneInput from './AppPhoneInput';
 import AppTextInput from './AppTextInput';
+import Tooltip from './Tooltip';
 
 export type FormInputProps = {
   label: string;
@@ -13,13 +15,20 @@ export type FormInputProps = {
   defaultValue?: string;
   textInputProps: TextInputProps;
   error?: string;
+  tooltip?: React.ReactNode;
 };
 
 const FormInput = React.forwardRef<any, FormInputProps>(
-  ({ label, textInputProps, control, error, leftIcon, phone = false, name, defaultValue }, ref) => {
+  (
+    { label, textInputProps, control, error, leftIcon, phone = false, name, defaultValue, tooltip },
+    ref,
+  ) => {
     return (
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>{label}</Text>
+        <View style={styles.labelContainer}>
+          <Text style={styles.inputLabel}>{label}</Text>
+          {tooltip}
+        </View>
         <Controller
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           control={control}
@@ -66,10 +75,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'left',
     alignItems: 'flex-start',
+    marginRight: 5,
   },
   inputError: {
     display: 'flex',
     fontSize: 12,
     color: 'red',
+  },
+  labelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

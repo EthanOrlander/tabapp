@@ -10,6 +10,7 @@ export default StyleSheet.create({
     alignItems: 'flex-start',
     flexDirection: 'column',
     paddingHorizontal: 20,
+    overflow: 'visible',
   },
   title: {
     fontSize: 20,
@@ -66,5 +67,18 @@ export default StyleSheet.create({
     marginVertical: 15,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  passwordRequirementsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  passwordRequirementsBody: {
+    fontSize: 16,
+  },
+  passwordRequirementsContainer: {
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    padding: 10,
+    elevation: 2,
   },
 });

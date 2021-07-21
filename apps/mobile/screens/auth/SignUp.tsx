@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +14,8 @@ import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import AppButton from '../../components/AppButton';
 import { useState } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Tooltip from '../../components/Tooltip';
 
 interface FormData {
   firstName: string;
@@ -52,10 +54,10 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
   } = useForm<FormData>({ resolver: yupResolver(schema) });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setCognitoUser } = useContext(AuthContext);
-  const ref_lastName = useRef<HTMLDivElement>(null);
-  const ref_phoneNumber = useRef<HTMLDivElement>(null);
-  const ref_email = useRef<HTMLDivElement>(null);
-  const ref_password = useRef<HTMLDivElement>(null);
+  const ref_lastName = useRef<TextInput>(null);
+  const ref_phoneNumber = useRef<TextInput>(null);
+  const ref_email = useRef<TextInput>(null);
+  const ref_password = useRef<TextInput>(null);
 
   async function onSubmit(data: FormData) {
     setIsSubmitting(true);
@@ -157,6 +159,26 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
       error: errors.password?.message,
       name: 'password',
       ref: ref_password,
+      tooltip: (
+        <Tooltip
+          anchor={<MaterialCommunityIcons name="information" size={18} color="#6e6869" />}
+          popover={
+            <View style={styles.passwordRequirementsContainer}>
+              <Text style={styles.passwordRequirementsTitle}>Password requirements</Text>
+              {[
+                '8 characters minimum',
+                'at least 1 lowercase letter',
+                'at least 1 uppercase letter',
+                'at least 1 number',
+              ].map((requirement, key) => (
+                <Text style={styles.passwordRequirementsBody} key={key}>
+                  • {requirement}
+                </Text>
+              ))}
+            </View>
+          }
+        />
+      ),
       textInputProps: {
         placeholder: 'Enter password',
         autoCapitalize: 'none',
