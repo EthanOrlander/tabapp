@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import styles from './styles';
 import { sanitizeCognitoErrorMessage } from './utils';
 import { useState } from 'react';
+import { testProperties } from '../../utils/TestProperties';
 
 interface FormData {
   code: string;
@@ -59,6 +60,7 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
     error: errors.code?.message,
     name: 'code',
     textInputProps: {
+      ...testProperties('input-code'),
       placeholder: 'Enter verification code',
       autoCapitalize: 'none',
       keyboardType: 'numeric',
@@ -68,7 +70,7 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
     },
   };
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
+    <SafeAreaView style={styles.safeAreaContainer} {...testProperties('screen-confirm-sign-in')}>
       <View style={styles.container}>
         <Text style={styles.title}>Confirm Sign In</Text>
         {cognitoError && (
@@ -77,7 +79,12 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
           </Text>
         )}
         <FormInput {...formInput} />
-        <AppButton title="Confirm" onPress={handleSubmit(onSubmit)} isLoading={isSubmitting} />
+        <AppButton
+          testProps={testProperties('button-confirm-sign-in')}
+          title="Confirm"
+          onPress={handleSubmit(onSubmit)}
+          isLoading={isSubmitting}
+        />
       </View>
     </SafeAreaView>
   );

@@ -13,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import { sanitizeCognitoErrorMessage } from './utils';
+import { testProperties } from '../../utils/TestProperties';
 
 interface FormData {
   phoneNumber: string;
@@ -87,6 +88,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation }) => {
         <FormInput {...formInput} />
         <Text>A recovery code will be sent to your email.</Text>
         <AppButton
+          testProps={testProperties('button-forgot-password')}
           title="Send recovery code"
           onPress={handleSubmit(onSubmit)}
           isLoading={isSubmitting}

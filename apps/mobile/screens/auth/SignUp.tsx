@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Tooltip from '../../components/Tooltip';
 import { sanitizeCognitoErrorMessage } from './utils';
+import { testProperties } from '../../utils/TestProperties';
 
 interface FormData {
   firstName: string;
@@ -219,7 +220,12 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
           {formInputs.map((formInput, key) => (
             <FormInput key={key} {...formInput} />
           ))}
-          <AppButton title="Sign Up" onPress={handleSubmit(onSubmit)} isLoading={isSubmitting} />
+          <AppButton
+            testProps={testProperties('button-sign-up')}
+            title="Sign Up"
+            onPress={handleSubmit(onSubmit)}
+            isLoading={isSubmitting}
+          />
           <View style={styles.footerButtonContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
               <Text style={styles.forgotPasswordButtonText}>Already have an account? Sign In</Text>

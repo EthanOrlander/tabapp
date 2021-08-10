@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "outDir": "./.tsbuild/",
+        "sourceMap": false,
+        "target": "es2019",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "removeComments": true,
+        "noImplicitAny": true,
+        "strictPropertyInitialization": true,
+        "strictNullChecks": true,
+        "types": [
+            "node",
+            "@wdio/jasmine-framework",
+            "expect-webdriverio/jasmine",
+            "webdriverio/async"
+        ]
+    },
+    "include": [
+        "./config/**/*.ts",
+        "./tests/**/*.ts"
+    ]
+}

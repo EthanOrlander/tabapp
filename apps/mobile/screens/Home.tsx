@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
+import { testProperties } from '../utils/TestProperties';
 export default function Home({
   updateAuthState,
 }: {
@@ -15,7 +16,7 @@ export default function Home({
     }
   }
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...testProperties('screen-home')}>
       <Text> 💙 + 💛</Text>
       <Button title="Sign Out" color="tomato" onPress={signOut} />
     </View>

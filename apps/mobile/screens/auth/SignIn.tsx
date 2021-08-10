@@ -14,6 +14,7 @@ import { useRef } from 'react';
 import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import { sanitizeCognitoErrorMessage } from './utils';
+import { testProperties } from '../../utils/TestProperties';
 
 interface FormData {
   phoneNumber: string;
@@ -72,6 +73,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
       name: 'phoneNumber',
       phone: true,
       textInputProps: {
+        ...testProperties('input-phone-number'),
         placeholder: 'Enter mobile',
         autoCapitalize: 'none',
         keyboardType: 'phone-pad',
@@ -88,6 +90,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
       name: 'password',
       ref: ref_password,
       textInputProps: {
+        ...testProperties('input-password'),
         placeholder: 'Enter password',
         autoCapitalize: 'none',
         keyboardType: 'default',
@@ -100,7 +103,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
     },
   ];
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
+    <SafeAreaView style={styles.safeAreaContainer} {...testProperties('screen-sign-in')}>
       <View style={styles.container}>
         <Text style={styles.title}>Sign in to your account</Text>
         {cognitoError && (
@@ -112,7 +115,9 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
           <FormInput key={key} {...formInput} />
         ))}
         <View style={styles.forgotPasswordButtonContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <TouchableOpacity
+            {...testProperties('button-forgot-password')}
+            onPress={() => navigation.navigate('ForgotPassword')}>
             <Text
               style={styles.forgotPasswordButtonText}
               onPress={() => navigation.navigate('ForgotPassword')}>
@@ -121,10 +126,17 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.submitButtonContainer}>
-          <AppButton title="Submit" onPress={handleSubmit(onSubmit)} isLoading={isSubmitting} />
+          <AppButton
+            testProps={testProperties('button-sign-in')}
+            title="Submit"
+            onPress={handleSubmit(onSubmit)}
+            isLoading={isSubmitting}
+          />
         </View>
         <View style={styles.signUpLinkContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SignUp')}
+            {...testProperties('button-sign-up')}>
             {/*eslint-disable-next-line react/no-unescaped-entities*/}
             <Text style={styles.signUpLink}>Don't have an account? Sign Up</Text>
           </TouchableOpacity>
