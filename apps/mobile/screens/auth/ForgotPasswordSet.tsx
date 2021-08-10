@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import { sanitizeCognitoErrorMessage } from './utils';
+import { testProperties } from '../../utils/TestProperties';
 
 interface FormData {
   code: string;
@@ -104,6 +105,7 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
           <FormInput key={key} {...formInput} />
         ))}
         <AppButton
+          testProps={testProperties('button-forgot-password-set')}
           title="Set new password"
           onPress={handleSubmit(onSubmit)}
           isLoading={isSubmitting}

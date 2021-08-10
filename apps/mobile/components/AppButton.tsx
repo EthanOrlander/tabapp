@@ -1,19 +1,22 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { TestProps } from '../utils/TestProperties';
 
 type AppButtonProps = {
   title: string;
   onPress: () => void;
   isLoading?: boolean;
+  testProps: TestProps;
 };
 
 // TODO disable press when loading
-const AppButton: React.FC<AppButtonProps> = ({ title, onPress, isLoading = false }) => {
+const AppButton: React.FC<AppButtonProps> = ({ title, onPress, isLoading = false, testProps }) => {
   return (
     <TouchableOpacity
       disabled={isLoading}
       style={[styles.button, isLoading && styles.buttonLoading]}
-      onPress={onPress}>
+      onPress={onPress}
+      {...testProps}>
       <Text style={styles.buttonText}>{title}</Text>
       {/* TODO Make this loading indicator work */}
       {isLoading && <ActivityIndicator style={styles.activityIndicator} color="#fff" />}

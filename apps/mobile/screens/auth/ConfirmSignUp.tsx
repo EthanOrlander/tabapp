@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import styles from './styles';
 import { sanitizeCognitoErrorMessage } from './utils';
+import { testProperties } from '../../utils/TestProperties';
 
 interface FormData {
   code: string;
@@ -80,6 +81,7 @@ const ConfirmSignUp: React.FC<ConfirmSignUpProps> = ({ navigation }) => {
         )}
         <FormInput {...formInput} />
         <AppButton
+          testProps={testProperties('button-confirm-sign-up')}
           title="Confirm Sign Up"
           onPress={handleSubmit(onSubmit)}
           isLoading={isSubmitting}
