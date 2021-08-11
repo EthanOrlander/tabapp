@@ -29,11 +29,13 @@ Adding a debt is as simple as opening the app, clicking the plus sign, selecting
 
 ## Monorepo
 
-- [apps/mobile](apps/mobile): The Expo (React-Native) mobile app
+- [apps/mobile](apps/mobile): The mobile app made with [React-Native](https://reactnative.dev/) using [Expo](https://expo.io/)
 
-- [infra](infra): Pulumi definitions for AWS
+- [infra](infra): [Pulumi](https://www.pulumi.com/) definitions for AWS
 
-- [backend](backend): Apollo Federation GraphQL API & microservices *coming soon*
+- [e2e/mobile](e2e/mobile): Black-box testing for the mobile apps using [Appium](https://appium.io/) and [WebdriverIO](https://webdriver.io/)
+
+- [backend](backend): Backend services exposed in a GraphQL endpoint using [Apollo Federation](https://www.apollographql.com/docs/federation) *coming soon*
 
 
 ## Contributing
