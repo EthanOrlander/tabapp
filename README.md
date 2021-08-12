@@ -23,7 +23,7 @@ TabApp is a peer-debt tracking app designed specifically for college students. I
 
 ## Usage
 
-Adding a debt is as simple as opening the app, clicking the plus sign, selecting a contact, and entering an amount. The person on the other side of the debt does not need to have the app in order for this to work. If they have the app, the debt will be available for them. If they don't have the app, they will receive a link via text or email. Using this link, they can mark the debt as paid when the time has come.
+Adding a debt is as simple as opening the app, clicking the plus sign, selecting a contact, and entering an amount. The person on the other side of the debt does not need to have the app in order for this to work. If they have the app, the debt will be available for them. If they don't have the app, they will receive a link via text or email. Using this link, they can mark the debt as paid when the time comes.
 
 *More coming soon*
 
