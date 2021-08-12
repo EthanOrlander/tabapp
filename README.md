@@ -33,7 +33,7 @@ Adding a debt is as simple as opening the app, clicking the plus sign, selecting
 
 - [infra](infra): [Pulumi](https://www.pulumi.com/) definitions for AWS
 
-- [e2e/mobile](e2e/mobile): Black-box testing for the mobile apps using [Appium](https://appium.io/) and [WebdriverIO](https://webdriver.io/)
+- [e2e/mobile](e2e/mobile): Black-box testing for the mobile apps using [Appium](https://appium.io/), [WebdriverIO](https://webdriver.io/), and [Jasmine](https://jasmine.github.io/)
 
 - [backend](backend): Backend services exposed in a GraphQL endpoint using [Apollo Federation](https://www.apollographql.com/docs/federation) *coming soon*
 
