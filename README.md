@@ -31,7 +31,7 @@ Adding a debt is as simple as opening the app, clicking the plus sign, selecting
 
 - [apps/mobile](apps/mobile): The mobile app made with [React-Native](https://reactnative.dev/) using [Expo](https://expo.io/)
 
-- [infra](infra): [Pulumi](https://www.pulumi.com/) definitions for AWS
+- [infra](infra): [Pulumi](https://www.pulumi.com/) definitions for infrastructure on [AWS](https://aws.amazon.com/)
 
 - [e2e/mobile](e2e/mobile): Black-box testing for the mobile apps using [Appium](https://appium.io/), [WebdriverIO](https://webdriver.io/), and [Jasmine](https://jasmine.github.io/)
 
