@@ -19,7 +19,7 @@ TabApp is an iOS and Android app for students to track IOUs and expenses with th
 
 As students, we're constantly splitting pizzas, lending drinks, and spotting friends food. We split utilities, wifi, and groceries with our housemates. Wouldn't it be great if you didn't have to keep track of all these tabs in your head?
 
-TabApp is a peer-debt tracking app designed specifically for college students. It is stupid simple and fast to use. While some other apps  support tracking expenses and debts between users, they offer *too many* features, to the extent that entering a debt is so laborious that it is not worth using the app at all. TabApp is designed by students, for students.
+TabApp is a peer-debt management app designed specifically for college students. It is stupid simple and fast to use. While some other apps  support tracking expenses and debts between users, they offer *too many* features, to the extent that entering a debt is so laborious that it is not worth using the app at all. TabApp is designed by students, for students.
 
 ## Usage
 
