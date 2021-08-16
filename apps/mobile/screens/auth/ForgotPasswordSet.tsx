@@ -1,10 +1,8 @@
-import React, { useContext, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, TextInput as RNTextInput, Image } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AppTextInput from '../../components/AppTextInput';
-import AppButton from '../../components/AppButton';
-import AuthContext from './AuthContext';
+import Button from '../../components/Button';
 import * as yup from 'yup';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -15,6 +13,7 @@ import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import { sanitizeCognitoErrorMessage } from './utils';
 import { testProperties } from '../../utils/TestProperties';
+import useAuth from '../../hooks/useAuth';
 
 interface FormData {
   code: string;
@@ -39,8 +38,8 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  const { username } = useContext(AuthContext);
-  const ref_password = useRef<TextInput>(null);
+  const { username } = useAuth();
+  const ref_password = useRef<RNTextInput>(null);
   const [cognitoError, setCognitoError] = useState<{
     code: string;
     message: string;
@@ -94,22 +93,43 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
   ];
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Forgot password</Text>
-        {cognitoError && (
-          <Text style={styles.cognitoError}>
-            {sanitizeCognitoErrorMessage(cognitoError.message)}
-          </Text>
-        )}
-        {formInputs.map((formInput, key) => (
-          <FormInput key={key} {...formInput} />
-        ))}
-        <AppButton
-          testProps={testProperties('button-forgot-password-set')}
-          title="Set new password"
-          onPress={handleSubmit(onSubmit)}
-          isLoading={isSubmitting}
-        />
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+          justifyContent: 'space-between',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Forgot password</Text>
+          {cognitoError && (
+            <Text style={styles.cognitoError}>
+              {sanitizeCognitoErrorMessage(cognitoError.message)}
+            </Text>
+          )}
+          {formInputs.map((formInput, key) => (
+            <FormInput key={key} {...formInput} />
+          ))}
+          <Button
+            color="primary"
+            fill="solid"
+            size="large"
+            testProps={testProperties('button-forgot-password-set')}
+            title="Set new password"
+            onPress={handleSubmit(onSubmit)}
+            isLoading={isSubmitting}
+          />
+        </View>
+        <View style={{ width: '100%' }}>
+          <Image
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            source={require('../../assets/images/logo-text.png')}
+            style={{ width: '100%' }}
+            resizeMethod="scale"
+            resizeMode="center"
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

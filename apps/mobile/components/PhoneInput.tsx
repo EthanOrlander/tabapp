@@ -1,19 +1,22 @@
 import React from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
-import PhoneInput from 'react-native-phone-number-input';
+import DefaultPhoneInput from 'react-native-phone-number-input';
+import useTheme from '../hooks/useTheme';
+import { styleSheet } from './TextInput';
 
 /*
  * Pull out 'value' from props since PhoneInput manages it's own state
  * Run parent's (react-hook-form's) onChangeText on onChangeFormattedText,
  * to update parent form state with complete phone #, including country code
  */
-const AppPhoneInput = React.forwardRef<TextInput, TextInputProps>(
+const PhoneInput = React.forwardRef<TextInput, TextInputProps>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ value, onChangeText, ...props }, ref) => {
+    const theme = useTheme();
     return (
-      <PhoneInput
+      <DefaultPhoneInput
         defaultCode="CA"
-        containerStyle={styles.container}
+        containerStyle={{ ...styleSheet(theme).container, padding: 0 }}
         placeholderTextColor="#6e6869"
         layout="first"
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -26,24 +29,10 @@ const AppPhoneInput = React.forwardRef<TextInput, TextInputProps>(
   },
 );
 
-export default AppPhoneInput;
+export default PhoneInput;
 
 const styles = StyleSheet.create({
-  container: {
-    fontSize: 18,
-    color: '#101010',
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderColor: '#6425C7',
-    shadowColor: 'rgb(100, 37, 199)',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    width: '100%',
-  },
   textContainer: {
-    borderRadius: 5,
+    borderRadius: 8,
   },
 });

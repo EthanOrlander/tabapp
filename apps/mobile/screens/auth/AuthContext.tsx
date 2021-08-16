@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 
-type ContextState = {
+export type ContextState = {
   updateAuthState: (state: string) => void;
   cognitoUser: CognitoUser | undefined;
   setCognitoUser: (user: CognitoUser) => void;

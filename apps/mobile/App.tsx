@@ -8,6 +8,8 @@ import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { PortalProvider } from '@gorhom/portal';
+import { ThemeProvider } from './theme/theme.context';
+
 import { CognitoUser } from 'amazon-cognito-identity-js';
 
 import useCachedResources from './hooks/useCachedResources';
@@ -72,16 +74,18 @@ const App: React.FC = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <PortalProvider>
-        <StatusBar />
-        <NavigationContainer>
-          {isUserLoggedIn === 'initializing' && <Initializing />}
-          {isUserLoggedIn === 'loggedIn' && <AppNavigator updateAuthState={updateAuthState} />}
-          {isUserLoggedIn === 'loggedOut' && <AuthStack updateAuthState={updateAuthState} />}
-        </NavigationContainer>
-      </PortalProvider>
-    </SafeAreaProvider>
+    <ThemeProvider>
+      <SafeAreaProvider>
+        <PortalProvider>
+          <StatusBar />
+          <NavigationContainer>
+            {isUserLoggedIn === 'initializing' && <Initializing />}
+            {isUserLoggedIn === 'loggedIn' && <AppNavigator updateAuthState={updateAuthState} />}
+            {isUserLoggedIn === 'loggedOut' && <AuthStack updateAuthState={updateAuthState} />}
+          </NavigationContainer>
+        </PortalProvider>
+      </SafeAreaProvider>
+    </ThemeProvider>
   );
   // const isLoadingComplete = useCachedResources();
   // const colorScheme = useColorScheme();

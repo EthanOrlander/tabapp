@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
+import { View, Text, Image } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AppButton from '../../components/AppButton';
-import AuthContext from './AuthContext';
+import Button from '../../components/Button';
+import useAuth from '../../hooks/useAuth';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './Auth';
@@ -37,7 +37,7 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  const { updateAuthState, cognitoUser } = useContext(AuthContext);
+  const { updateAuthState, cognitoUser } = useAuth();
   const [cognitoError, setCognitoError] = useState<{
     code: string;
     message: string;
@@ -71,20 +71,41 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
   };
   return (
     <SafeAreaView style={styles.safeAreaContainer} {...testProperties('screen-confirm-sign-in')}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Confirm Sign In</Text>
-        {cognitoError && (
-          <Text style={styles.cognitoError}>
-            {sanitizeCognitoErrorMessage(cognitoError.message)}
-          </Text>
-        )}
-        <FormInput {...formInput} />
-        <AppButton
-          testProps={testProperties('button-confirm-sign-in')}
-          title="Confirm"
-          onPress={handleSubmit(onSubmit)}
-          isLoading={isSubmitting}
-        />
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+          justifyContent: 'space-between',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Confirm Sign In</Text>
+          {cognitoError && (
+            <Text style={styles.cognitoError}>
+              {sanitizeCognitoErrorMessage(cognitoError.message)}
+            </Text>
+          )}
+          <FormInput {...formInput} />
+          <Button
+            color="primary"
+            fill="solid"
+            size="large"
+            testProps={testProperties('button-confirm-sign-in')}
+            title="Confirm"
+            onPress={handleSubmit(onSubmit)}
+            isLoading={isSubmitting}
+          />
+        </View>
+        <View style={{ width: '100%' }}>
+          <Image
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            source={require('../../assets/images/logo-text.png')}
+            style={{ width: '100%' }}
+            resizeMethod="scale"
+            resizeMode="center"
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

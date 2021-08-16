@@ -19,24 +19,11 @@ export default StyleSheet.create({
     marginVertical: 15,
   },
   forgotPasswordButtonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   forgotPasswordButtonText: {
-    color: '#6425C7',
-    fontSize: 18,
-    fontWeight: '600',
-    textDecorationStyle: 'solid',
-    textDecorationLine: 'underline',
-    textDecorationColor: '#6425C7',
-  },
-  signUpLinkContainer: {
-    marginVertical: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  signUpLink: {
     color: '#6425C7',
     fontSize: 18,
     fontWeight: '600',

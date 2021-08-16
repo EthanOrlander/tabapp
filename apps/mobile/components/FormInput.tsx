@@ -2,8 +2,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { StyleSheet, View, Text, TextInputProps } from 'react-native';
-import AppPhoneInput from './AppPhoneInput';
-import AppTextInput from './AppTextInput';
+import AppPhoneInput from './PhoneInput';
+import AppTextInput from './TextInput';
 import Tooltip from './Tooltip';
 
 export type FormInputProps = {

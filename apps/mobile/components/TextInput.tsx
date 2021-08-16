@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, TextInputProps } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput as RNTextInput,
+  TextInputProps as RNTextInputProps,
+} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import useTheme from '../hooks/useTheme';
+import { Colors, Theme } from '../theme/theme';
 
-interface AppTextInputProps extends TextInputProps {
+interface TextInputProps extends RNTextInputProps {
   leftIcon: any;
 }
-const AppTextInput = React.forwardRef<TextInput, AppTextInputProps>(
+const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
   ({ leftIcon, secureTextEntry: propsSecureTextEntry, ...otherProps }, ref) => {
     const [hidePassword, setHidePassword] = useState<boolean>(propsSecureTextEntry ?? false);
     const onTogglePassword = () => setHidePassword((curr) => !curr);
+    const theme = useTheme();
+    const styles = styleSheet(theme);
 
     return (
       <View style={styles.container}>
@@ -21,8 +30,7 @@ const AppTextInput = React.forwardRef<TextInput, AppTextInputProps>(
             style={styles.leftIcon}
           />
         )}
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-        <TextInput
+        <RNTextInput
           style={styles.input}
           placeholderTextColor="#6e6869"
           secureTextEntry={hidePassword}
@@ -30,7 +38,6 @@ const AppTextInput = React.forwardRef<TextInput, AppTextInputProps>(
           ref={ref}
         />
         {propsSecureTextEntry && (
-          /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
           <MaterialCommunityIcons
             name={hidePassword ? 'eye' : 'eye-off'}
             size={20}
@@ -44,32 +51,29 @@ const AppTextInput = React.forwardRef<TextInput, AppTextInputProps>(
   },
 );
 
-export default AppTextInput;
+export default TextInput;
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'rgba(0,0,0,0.025)',
-    borderRadius: 5,
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderColor: '#6425C7',
-    shadowColor: 'rgb(100, 37, 199)',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    flexDirection: 'row',
-    padding: 15,
-    width: '100%',
-  },
-  leftIcon: {
-    marginRight: 10,
-  },
-  rightIcon: {
-    marginLeft: 10,
-  },
-  input: {
-    width: '80%',
-    fontSize: 18,
-    color: '#101010',
-  },
-});
+export const styleSheet = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: theme.colors.lightGrey,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderStyle: 'solid',
+      borderColor: theme.colors.grey,
+      flexDirection: 'row',
+      padding: 15,
+      width: '100%',
+    },
+    leftIcon: {
+      marginRight: 10,
+    },
+    rightIcon: {
+      marginLeft: 10,
+    },
+    input: {
+      width: '80%',
+      fontSize: 18,
+      color: theme.colors.darkGrey,
+    },
+  });

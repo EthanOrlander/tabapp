@@ -1,23 +1,23 @@
-import React, { useContext, useRef } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, TextInput as RNTextInput, Image } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AuthContext from './AuthContext';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './Auth';
 import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
-import AppButton from '../../components/AppButton';
+import Button from '../../components/Button';
 import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Tooltip from '../../components/Tooltip';
 import { sanitizeCognitoErrorMessage } from './utils';
 import { testProperties } from '../../utils/TestProperties';
+import useAuth from '../../hooks/useAuth';
 
 interface FormData {
   firstName: string;
@@ -64,11 +64,11 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
     formState: { errors },
   } = useForm<FormData>({ resolver: yupResolver(schema) });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { setCognitoUser } = useContext(AuthContext);
-  const ref_lastName = useRef<TextInput>(null);
-  const ref_phoneNumber = useRef<TextInput>(null);
-  const ref_email = useRef<TextInput>(null);
-  const ref_password = useRef<TextInput>(null);
+  const { setCognitoUser } = useAuth();
+  const ref_lastName = useRef<RNTextInput>(null);
+  const ref_phoneNumber = useRef<RNTextInput>(null);
+  const ref_email = useRef<RNTextInput>(null);
+  const ref_password = useRef<RNTextInput>(null);
   const [cognitoError, setCognitoError] = useState<{
     code: string;
     message: string;
@@ -220,17 +220,24 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
           {formInputs.map((formInput, key) => (
             <FormInput key={key} {...formInput} />
           ))}
-          <AppButton
+          <Button
             testProps={testProperties('button-sign-up')}
+            color="primary"
+            fill="solid"
+            size="large"
             title="Sign Up"
             onPress={handleSubmit(onSubmit)}
             isLoading={isSubmitting}
           />
-          <View style={styles.footerButtonContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-              <Text style={styles.forgotPasswordButtonText}>Already have an account? Sign In</Text>
-            </TouchableOpacity>
-          </View>
+        </View>
+        <View style={{ width: '100%' }}>
+          <Image
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            source={require('../../assets/images/logo-text.png')}
+            style={{ width: '100%' }}
+            resizeMethod="scale"
+            resizeMode="center"
+          />
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>

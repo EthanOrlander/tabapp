@@ -1,20 +1,20 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput as RNTextInput, Image } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AppButton from '../../components/AppButton';
+import Button from '../../components/Button';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from './Auth';
-import AuthContext from './AuthContext';
 import { useRef } from 'react';
 import styles from './styles';
 import FormInput, { FormInputProps } from '../../components/FormInput';
 import { sanitizeCognitoErrorMessage } from './utils';
 import { testProperties } from '../../utils/TestProperties';
+import useAuth from '../../hooks/useAuth';
 
 interface FormData {
   phoneNumber: string;
@@ -46,8 +46,8 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  const { setCognitoUser } = useContext(AuthContext);
-  const ref_password = useRef<TextInput>(null);
+  const { setCognitoUser } = useAuth();
+  const ref_password = useRef<RNTextInput>(null);
   const [cognitoError, setCognitoError] = useState<{
     code: string;
     message: string;
@@ -104,42 +104,55 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   ];
   return (
     <SafeAreaView style={styles.safeAreaContainer} {...testProperties('screen-sign-in')}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Sign in to your account</Text>
-        {cognitoError && (
-          <Text style={styles.cognitoError}>
-            {sanitizeCognitoErrorMessage(cognitoError.message)}
-          </Text>
-        )}
-        {formInputs.map((formInput, key) => (
-          <FormInput key={key} {...formInput} />
-        ))}
-        <View style={styles.forgotPasswordButtonContainer}>
-          <TouchableOpacity
-            {...testProperties('button-forgot-password')}
-            onPress={() => navigation.navigate('ForgotPassword')}>
-            <Text
-              style={styles.forgotPasswordButtonText}
-              onPress={() => navigation.navigate('ForgotPassword')}>
-              Forgot my password
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+          justifyContent: 'space-between',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Sign in to your account</Text>
+          {cognitoError && (
+            <Text style={styles.cognitoError}>
+              {sanitizeCognitoErrorMessage(cognitoError.message)}
             </Text>
-          </TouchableOpacity>
+          )}
+          {formInputs.map((formInput, key) => (
+            <FormInput key={key} {...formInput} />
+          ))}
+          <View style={styles.forgotPasswordButtonContainer}>
+            <Button
+              testProps={testProperties('button-forgot-password')}
+              color="primary"
+              fill="clear"
+              size="small"
+              title="Forgot"
+              uppercase={false}
+              onPress={() => navigation.navigate('ForgotPassword')}
+            />
+          </View>
+          <View style={styles.submitButtonContainer}>
+            <Button
+              testProps={testProperties('button-sign-in')}
+              color="primary"
+              fill="solid"
+              size="large"
+              title="Sign In"
+              onPress={handleSubmit(onSubmit)}
+              isLoading={isSubmitting}
+            />
+          </View>
         </View>
-        <View style={styles.submitButtonContainer}>
-          <AppButton
-            testProps={testProperties('button-sign-in')}
-            title="Submit"
-            onPress={handleSubmit(onSubmit)}
-            isLoading={isSubmitting}
+        <View style={{ width: '100%' }}>
+          <Image
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            source={require('../../assets/images/logo-text.png')}
+            style={{ width: '100%' }}
+            resizeMethod="scale"
+            resizeMode="center"
           />
-        </View>
-        <View style={styles.signUpLinkContainer}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SignUp')}
-            {...testProperties('button-sign-up')}>
-            {/*eslint-disable-next-line react/no-unescaped-entities*/}
-            <Text style={styles.signUpLink}>Don't have an account? Sign Up</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
