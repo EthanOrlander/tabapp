@@ -55,8 +55,6 @@ interface SignUpProps {
   route: RouteProp<RootStackParamList, 'SignUp'>;
 }
 
-// TODO what happens when user signs up but doesn't confirm phone #?
-// They can't log in and they can't reuse the info to sign up
 const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
   const {
     control,
