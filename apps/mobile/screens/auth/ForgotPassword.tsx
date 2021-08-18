@@ -74,7 +74,7 @@ const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'ForgotPassw
   };
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
+    <SafeAreaView>
       <View
         style={{
           width: '100%',
@@ -84,14 +84,15 @@ const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'ForgotPassw
           flexDirection: 'column',
         }}>
         <View style={styles.container}>
-          <Text style={styles.title}>Forgot password</Text>
+          <Text style={{ fontSize: 16, marginBottom: 20 }}>
+            A recovery code will be sent to your email.
+          </Text>
           {cognitoError && (
             <Text style={styles.cognitoError}>
               {sanitizeCognitoErrorMessage(cognitoError.message)}
             </Text>
           )}
           <FormInput {...formInput} />
-          <Text>A recovery code will be sent to your email.</Text>
           <Button
             color="primary"
             fill="solid"

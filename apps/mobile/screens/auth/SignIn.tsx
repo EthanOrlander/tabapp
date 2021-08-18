@@ -103,59 +103,57 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
     },
   ];
   return (
-    <SafeAreaView style={styles.safeAreaContainer} {...testProperties('screen-sign-in')}>
-      <View
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'space-between',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Sign in to your account</Text>
-          {cognitoError && (
-            <Text style={styles.cognitoError}>
-              {sanitizeCognitoErrorMessage(cognitoError.message)}
-            </Text>
-          )}
-          {formInputs.map((formInput, key) => (
-            <FormInput key={key} {...formInput} />
-          ))}
-          <View style={styles.forgotPasswordButtonContainer}>
-            <Button
-              testProps={testProperties('button-forgot-password')}
-              color="primary"
-              fill="clear"
-              size="small"
-              title="Forgot"
-              uppercase={false}
-              onPress={() => navigation.navigate('ForgotPassword')}
-            />
-          </View>
-          <View style={styles.submitButtonContainer}>
-            <Button
-              testProps={testProperties('button-sign-in')}
-              color="primary"
-              fill="solid"
-              size="large"
-              title="Sign In"
-              onPress={handleSubmit(onSubmit)}
-              isLoading={isSubmitting}
-            />
-          </View>
+    <View
+      style={{
+        width: '100%',
+        height: '100%',
+        justifyContent: 'space-between',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Sign in to your account</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
+        {formInputs.map((formInput, key) => (
+          <FormInput key={key} {...formInput} />
+        ))}
+        <View style={styles.forgotPasswordButtonContainer}>
+          <Button
+            testProps={testProperties('button-forgot-password')}
+            color="primary"
+            fill="clear"
+            size="small"
+            title="Forgot"
+            uppercase={false}
+            onPress={() => navigation.navigate('ForgotPassword')}
+          />
         </View>
-        <View style={{ width: '100%' }}>
-          <Image
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            source={require('../../assets/images/logo-text.png')}
-            style={{ width: '100%' }}
-            resizeMethod="scale"
-            resizeMode="center"
+        <View style={styles.submitButtonContainer}>
+          <Button
+            testProps={testProperties('button-sign-in')}
+            color="primary"
+            fill="solid"
+            size="large"
+            title="Sign In"
+            onPress={handleSubmit(onSubmit)}
+            isLoading={isSubmitting}
           />
         </View>
       </View>
-    </SafeAreaView>
+      <View style={{ width: '100%' }}>
+        <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          source={require('../../assets/images/logo-text.png')}
+          style={{ width: '100%' }}
+          resizeMethod="scale"
+          resizeMode="center"
+        />
+      </View>
+    </View>
   );
 };
 

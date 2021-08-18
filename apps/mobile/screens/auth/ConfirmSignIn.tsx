@@ -70,44 +70,42 @@ const ConfirmSignIn: React.FC<ConfirmSignInProps> = () => {
     },
   };
   return (
-    <SafeAreaView style={styles.safeAreaContainer} {...testProperties('screen-confirm-sign-in')}>
-      <View
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'space-between',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Confirm Sign In</Text>
-          {cognitoError && (
-            <Text style={styles.cognitoError}>
-              {sanitizeCognitoErrorMessage(cognitoError.message)}
-            </Text>
-          )}
-          <FormInput {...formInput} />
-          <Button
-            color="primary"
-            fill="solid"
-            size="large"
-            testProps={testProperties('button-confirm-sign-in')}
-            title="Confirm"
-            onPress={handleSubmit(onSubmit)}
-            isLoading={isSubmitting}
-          />
-        </View>
-        <View style={{ width: '100%' }}>
-          <Image
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            source={require('../../assets/images/logo-text.png')}
-            style={{ width: '100%' }}
-            resizeMethod="scale"
-            resizeMode="center"
-          />
-        </View>
+    <View
+      style={{
+        width: '100%',
+        height: '100%',
+        justifyContent: 'space-between',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Confirm Sign In</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
+        <FormInput {...formInput} />
+        <Button
+          color="primary"
+          fill="solid"
+          size="large"
+          testProps={testProperties('button-confirm-sign-in')}
+          title="Confirm"
+          onPress={handleSubmit(onSubmit)}
+          isLoading={isSubmitting}
+        />
       </View>
-    </SafeAreaView>
+      <View style={{ width: '100%' }}>
+        <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          source={require('../../assets/images/logo-text.png')}
+          style={{ width: '100%' }}
+          resizeMethod="scale"
+          resizeMode="center"
+        />
+      </View>
+    </View>
   );
 };
 

@@ -92,46 +92,44 @@ const ForgotPasswordSet: React.FC<ForgotPasswordSetProps> = ({ navigation }) => 
     },
   ];
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
-      <View
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'space-between',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Forgot password</Text>
-          {cognitoError && (
-            <Text style={styles.cognitoError}>
-              {sanitizeCognitoErrorMessage(cognitoError.message)}
-            </Text>
-          )}
-          {formInputs.map((formInput, key) => (
-            <FormInput key={key} {...formInput} />
-          ))}
-          <Button
-            color="primary"
-            fill="solid"
-            size="large"
-            testProps={testProperties('button-forgot-password-set')}
-            title="Set new password"
-            onPress={handleSubmit(onSubmit)}
-            isLoading={isSubmitting}
-          />
-        </View>
-        <View style={{ width: '100%' }}>
-          <Image
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            source={require('../../assets/images/logo-text.png')}
-            style={{ width: '100%' }}
-            resizeMethod="scale"
-            resizeMode="center"
-          />
-        </View>
+    <View
+      style={{
+        width: '100%',
+        height: '100%',
+        justifyContent: 'space-between',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Forgot password</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
+        {formInputs.map((formInput, key) => (
+          <FormInput key={key} {...formInput} />
+        ))}
+        <Button
+          color="primary"
+          fill="solid"
+          size="large"
+          testProps={testProperties('button-forgot-password-set')}
+          title="Set new password"
+          onPress={handleSubmit(onSubmit)}
+          isLoading={isSubmitting}
+        />
       </View>
-    </SafeAreaView>
+      <View style={{ width: '100%' }}>
+        <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          source={require('../../assets/images/logo-text.png')}
+          style={{ width: '100%' }}
+          resizeMethod="scale"
+          resizeMode="center"
+        />
+      </View>
+    </View>
   );
 };
 
