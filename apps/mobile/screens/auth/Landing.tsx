@@ -16,53 +16,51 @@ interface LandingProps {
 
 const Landing: React.FC<LandingProps> = ({ navigation }) => {
   return (
-    <SafeAreaView style={styles.safeAreaContainer} {...testProperties('screen-landing')}>
-      <LinearGradient
+    <LinearGradient
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        width: '100%',
+        paddingHorizontal: 20,
+      }}
+      colors={['#D1F7FF', '#17D5FF']}>
+      <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
+          width: '80%',
           alignContent: 'center',
           justifyContent: 'center',
-          height: '100%',
-          width: '100%',
-          paddingHorizontal: 20,
-        }}
-        colors={['#D1F7FF', '#17D5FF']}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '80%',
-            alignContent: 'center',
-            justifyContent: 'center',
-          }}>
-          <Image
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            source={require('../../assets/images/logo-text.png')}
-            style={{ width: '100%' }}
-            resizeMethod="scale"
-            resizeMode="center"
-          />
-          <Button
-            color="primary"
-            fill="solid"
-            size="large"
-            testProps={testProperties('button-navigate-sign-in')}
-            title="Sign In"
-            onPress={() => navigation.navigate('SignIn')}
-          />
-          <View style={{ height: 20 }} />
-          <Button
-            color="secondary"
-            fill="solid"
-            size="large"
-            testProps={testProperties('button-navigate-sign-up')}
-            title="Sign Up"
-            onPress={() => navigation.navigate('SignUp')}
-          />
-        </View>
-      </LinearGradient>
-    </SafeAreaView>
+        }}>
+        <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          source={require('../../assets/images/logo-text.png')}
+          style={{ width: '100%' }}
+          resizeMethod="scale"
+          resizeMode="center"
+        />
+        <Button
+          color="primary"
+          fill="solid"
+          size="large"
+          testProps={testProperties('button-navigate-sign-in')}
+          title="Sign In"
+          onPress={() => navigation.navigate('SignIn')}
+        />
+        <View style={{ height: 20 }} />
+        <Button
+          color="secondary"
+          fill="solid"
+          size="large"
+          testProps={testProperties('button-navigate-sign-up')}
+          title="Sign Up"
+          onPress={() => navigation.navigate('SignUp')}
+        />
+      </View>
+    </LinearGradient>
   );
 };
 

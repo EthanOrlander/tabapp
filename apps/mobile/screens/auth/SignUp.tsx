@@ -206,39 +206,37 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
   ];
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
-      <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={5}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Create a new account</Text>
-          {cognitoError && (
-            <Text style={styles.cognitoError}>
-              {sanitizeCognitoErrorMessage(cognitoError.message)}
-            </Text>
-          )}
-          {formInputs.map((formInput, key) => (
-            <FormInput key={key} {...formInput} />
-          ))}
-          <Button
-            testProps={testProperties('button-sign-up')}
-            color="primary"
-            fill="solid"
-            size="large"
-            title="Sign Up"
-            onPress={handleSubmit(onSubmit)}
-            isLoading={isSubmitting}
-          />
-        </View>
-        <View style={{ width: '100%' }}>
-          <Image
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            source={require('../../assets/images/logo-text.png')}
-            style={{ width: '100%' }}
-            resizeMethod="scale"
-            resizeMode="center"
-          />
-        </View>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+    <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={5}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Create a new account</Text>
+        {cognitoError && (
+          <Text style={styles.cognitoError}>
+            {sanitizeCognitoErrorMessage(cognitoError.message)}
+          </Text>
+        )}
+        {formInputs.map((formInput, key) => (
+          <FormInput key={key} {...formInput} />
+        ))}
+        <Button
+          testProps={testProperties('button-sign-up')}
+          color="primary"
+          fill="solid"
+          size="large"
+          title="Sign Up"
+          onPress={handleSubmit(onSubmit)}
+          isLoading={isSubmitting}
+        />
+      </View>
+      <View style={{ width: '100%' }}>
+        <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          source={require('../../assets/images/logo-text.png')}
+          style={{ width: '100%' }}
+          resizeMethod="scale"
+          resizeMode="center"
+        />
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 

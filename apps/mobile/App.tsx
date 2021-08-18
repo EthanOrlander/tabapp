@@ -10,15 +10,11 @@ import { PortalProvider } from '@gorhom/portal';
 import { ThemeProvider } from './theme/theme.context';
 
 import AuthStack from './screens/auth/Auth';
-import MainNavigator from './screens/main/MainNavigator';
 import Drawer from './screens/main/drawer/Drawer';
 import { UpdateAuthStateProvider } from './hooks/updateAuthState/UpdateAuthStateContext';
 
 Amplify.configure({
   Auth: {
-    // region: process.env.AWS_COGNITO_REGION,
-    // userPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
-    // userPoolWebClientId: process.env.AWS_COGNITO_USER_POOL_WEB_CLIENT_ID,
     region: 'us-east-2',
     userPoolId: 'us-east-2_ICXYUL1pp',
     userPoolWebClientId: '2017tkqfc667fd1dnmjkc0ekdt',
@@ -68,18 +64,6 @@ const App: React.FC = () => {
       </SafeAreaProvider>
     </ThemeProvider>
   );
-  // const isLoadingComplete = useCachedResources();
-  // const colorScheme = useColorScheme();
-  // if (!isLoadingComplete) {
-  //   return null;
-  // } else {
-  //   return (
-  //     <SafeAreaProvider>
-  //       {/* <Navigation colorScheme={colorScheme} /> */}
-  //       <StatusBar />
-  //     </SafeAreaProvider>
-  //   );
-  // }
 };
 
 export default App;

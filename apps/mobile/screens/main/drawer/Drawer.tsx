@@ -6,7 +6,7 @@ import {
   DrawerContentComponentProps,
   DrawerContentOptions,
 } from '@react-navigation/drawer';
-import MainNavigator from '../MainNavigator';
+import MainNavigator from '../TabNavigator';
 import { EvilIcons } from '@expo/vector-icons';
 import AboutStack from './About/AboutStack';
 import AccountStack from './Account/AccountStack';

@@ -7,8 +7,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useDrawer from '../../../hooks/useDrawer';
 import useTheme from '../../../hooks/useTheme';
-import styles from '../../auth/styles';
-import { IBottomTabs } from '../MainNavigator';
+import { IBottomTabs } from '../TabNavigator';
 
 type TabsTabParams = {
   Incoming: undefined;
