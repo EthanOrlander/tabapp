@@ -10,7 +10,7 @@
 
 TabApp is an iOS and Android app for students to track IOUs and expenses with their friends & housemates ✨
 
-🔨 *TabApp is currently in development. It will be available in private beta in September 2021.*
+🔨 *~~TabApp is currently in development. It will be available in private beta in September 2021.~~*
 
 ![TabApp Design](assets/img/cover.svg)
 
@@ -25,7 +25,7 @@ TabApp is a peer-debt management app designed specifically for college students.
 
 ## Usage
 
-Adding a debt is as simple as opening the app, clicking the plus sign, selecting a contact, and entering an amount. The person on the other side of the debt does not need to have the app in order for this to work. If they have the app, the debt will be available for them on their "Tabs" page. If they don't have the app, they will receive a link via text or email. Using this link, they can mark the debt as paid when the time comes.
+Adding a debt is as simple as opening the app, clicking the plus sign, selecting a contact, and entering an amount. The person on the other side of the debt does not need to have the app in order for this to work. If they have the app, the debt will be available for them on their "Tabs" screen. If they don't have the app, they will receive a link via text or email. Using this link, they can mark the debt as paid when the time comes.
 
 *More coming soon*
 
