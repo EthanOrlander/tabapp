@@ -4,6 +4,8 @@
 
 ---
 
+*I have abandoned this project as Wealthsimple Cash will solve the same problems*
+
 # TabApp
 
 TabApp is an iOS and Android app for students to track IOUs and expenses with their friends & housemates ✨
