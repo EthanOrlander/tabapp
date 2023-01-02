@@ -4,7 +4,7 @@
 
 ---
 
-*I have abandoned this project as Wealthsimple Cash will solve the same problems*
+*I have abandoned this project as Wealthsimple Cash will solve the same problems (I joined WealthSimple)*
 
 # TabApp
 
